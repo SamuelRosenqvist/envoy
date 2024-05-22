@@ -19,9 +19,26 @@ static_resources:
               - "*"
               routes:
               - match:
-                  prefix: "/"
+                  prefix: "/service"
                 route:
                   cluster: upstream-service
+                typed_per_filter_config:
+                  envoy.filters.http.ext_authz:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                    check_settings:
+                      context_extensions:
+                        samros: calledservice
+                        samros2: calledserviceagain
+              - match:
+                  prefix: "/test"
+                route:
+                  cluster: upstream-service
+                typed_per_filter_config:
+                  envoy.filters.http.ext_authz:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                    check_settings:
+                      context_extensions:
+                        samros: calledtest
           http_filters:
           - name: envoy.filters.http.ext_authz
             typed_config:
