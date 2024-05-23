@@ -31,6 +31,7 @@ func (s *server) Check(
 	ctx context.Context,
 	req *envoy_service_auth_v3.CheckRequest) (*envoy_service_auth_v3.CheckResponse, error) {
 	authorization := req.Attributes.Request.Http.Headers["authorization"]
+	log.Println(req.Attributes)
 	log.Println(authorization)
 
 	extracted := strings.Fields(authorization)
